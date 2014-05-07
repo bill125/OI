@@ -1,0 +1,82 @@
+// Author: bill125
+// ntr czr
+// orz zyx
+// using namespace inline
+
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <string>
+#include <map>
+#include <set>
+#include <vector>
+#include <algorithm>
+#include <climits>
+#include <cstdlib>
+#include <ctime>
+#include <queue>
+#include <bitset>
+
+using namespace std;
+
+typedef long long ll;
+typedef double db;
+typedef pair<int,int> Pair;
+#define rep(i,n) for (int i=0; i<n; ++i)
+#define repD(i,n) for (int i=n-1; i>=0; --i)
+#define For(i,a,b) for (int i=a; i<=b; ++i)
+#define ForD(i,a,b) for (int i=a; i>=b; --i)
+#define ForE(i,a) for (Edge* i=h[a]; i; i=i->next)
+#define forv(i,a) for (unsigned int i=0, ___t=a.size(); i<___t; ++i)
+#define ForV(i,a) for (__typeof(a.begin()) i = a.begin();i != a.end();++i)
+#define fill(a,b) memset(a,b,sizeof(a))
+#define lowbit(a) ((a) & (-(a)))
+#define sqr(a) ((a)*(a))
+#define pb push_back
+#define mp make_pair
+#define gi gI()
+#define cut puts("===================")
+
+void setIO(string NAME) {
+	#ifndef ONLINE_JUDGE
+	string in=NAME+".in", out=NAME+".out";freopen(in.c_str(),"r",stdin),freopen(out.c_str(),"w",stdout);
+	#endif
+}
+ll gI() {char c=getchar();while ((c<'0' || c>'9')&&c!='-') c=getchar();ll flag=1,p=0;if (c=='-') flag=-1,c=getchar();while (c>='0' && c<='9') p=p*10+(c-'0'),c=getchar();return p*flag;}
+int gs(char *C) {char c=getchar();while (c==' ' || c=='\n') c=getchar();int l=0;while (c!=' ' && c!='\n') C[l++]=c,c=getchar();C[l]=0;return l;}
+template <class T> void debug (const T a,const int & n) {rep(i,n) printf("%d%c", a[i],(i==n-1)?'\n':' ');}
+
+const int inf=~0U>>1, maxn=1000000+10;
+int n,m;
+ll a[maxn], g[maxn];
+int s1[maxn], s2[maxn];
+
+int main() {
+	setIO("test");
+	
+	n=gi, m=gi;
+	For(i,1,n) a[i]=gi;
+	
+	rep(i,m) {
+		int x=gi;
+		For(j,1,n) g[j]=g[j-1]+a[j]-x;
+		int r1=0, r2=0;
+		For(j,0,n) {
+			while (r1 && g[j]>=g[s1[r1]]) --r1;
+			s1[++r1]=j;
+		}
+		ForD(j,n,0) {
+			while (r2 && g[j]<=g[s2[r2]]) --r2;
+			s2[++r2]=j;
+		}
+		int k=1, ans=0;
+		ForD(j,r1,1) {
+			while (k<=r2 && g[s2[k]]<=g[s1[j]]) ++k;
+			if (k>1) --k;
+			if (g[s2[k]]<=g[s1[j]]) ans=max(ans, s1[j]-s2[k]);
+		}
+		printf("%d%c", ans, (i==m-1)?'\n':' ');
+	}
+	
+	return 0;
+}
